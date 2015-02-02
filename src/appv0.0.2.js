@@ -34,15 +34,23 @@ $("input#count").click(function(){
 	console.log(division);
 	input=app.c.ziph(input,parseInt(count),division);
 	var sortable=[];
-	for (key in input){sortable.push([key,input[key].count]);}
+	var sampleLength=0;
+	for (key in input){
+		sortable.push([
+			input[key].instances ? input[key].instances.join("<br>") : input[key].instances,
+			input[key].count, 
+			input[key].instances ? input[key].instances.length : 1
+			]);
+		sampleLength++;
+	}
 	sortable.sort(function(a,b){return b[1]-a[1];});
 	var d="";
 	d+="<table>";
-	d+="<tr><td colspan='2'>sample length: "+app.m.sampleLength+"</td></tr>";
+	d+="<tr><td colspan='2'>sample length: "+sampleLength+"</td></tr>";
 	for (var i=0;i<sortable.length;i++){
 		var rowClass="odd";
 		if (i%2==0){rowClass="even";}
-		d+="<tr class='"+rowClass+"'><td>"+sortable[i][1]+"</td><td>"+sortable[i][0].replace(/</gi,"&lt;")+"</td></tr>";
+		d+="<tr class='"+rowClass+"'><td>"+sortable[i][1]+"</td><td>"+sortable[i][0]+"</td><td>"+sortable[i][2]+"</td></tr>";
 	}
 	d+="</table>";
 	$("#output").html(d);
@@ -52,7 +60,7 @@ $("input#count").click(function(){
 
 app.c.ziph=function(sample,n,spaces){
 	var spaces=spaces||false;
-	var n=n||1;
+	var n=n||n;
 	var lex={};
 	var sample=sample.toLowerCase();
 	if (spaces==true){
@@ -88,6 +96,7 @@ app.c.ziph=function(sample,n,spaces){
 	return lex;
 };
 
+app.c.ziph=enumero;
 
 ///////////////////////////////////////////
 
@@ -96,6 +105,7 @@ app.v.init=function(){
 	var d="";
 	d+="<table width='100%' id='layout'><tr><td colspan='3' id='area-right'>";
 		d+="<h1>"+app.m.metadata.name+"</h1>";
+		/*
 		d+="<hr>";
 		d+="<input type='radio' value='1' name='count' checked><label>count by singletons</label></br>";
 		d+="<input type='radio' value='2' name='count'><label>count by doubles</label><br/>";
@@ -104,6 +114,7 @@ app.v.init=function(){
 		d+="<hr>";
 		d+="<input type='radio' value='1' name='division' checked><label>count by words</label></br>";
 		d+="<input type='radio' value='0' name='division'><label>count by characters</label><br/>";
+		*/
 		d+="<textarea rows='10' cols='5' id='input' autofocus></textarea>";
 		d+="<input type='button' value='count' id='count'></input>";
 	d+="</td><td id='output'>";
